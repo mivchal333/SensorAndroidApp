@@ -1,18 +1,23 @@
 package com.example.sensorapp;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Context;
-import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -22,6 +27,24 @@ public class SensorActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SensorAdapter adapter;
 
+    private static final String SENSOR_APP_TAG = "SENSOR_APP_TAG";
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.fragment_sensor_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        String string = getString(R.string.sensors_count, sensorList.size());
+        getSupportActionBar().setSubtitle(string);
+        return true;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +55,12 @@ public class SensorActivity extends AppCompatActivity {
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
+
+        sensorList.forEach(sensor -> {
+            Log.d(SENSOR_APP_TAG, "Sensor name:" + sensor.getName());
+            Log.d(SENSOR_APP_TAG, "Sensor vendor:" + sensor.getVendor());
+            Log.d(SENSOR_APP_TAG, "Sensor max range:" + sensor.getMaximumRange());
+        });
 
         if (adapter == null) {
             adapter = new SensorAdapter(sensorList);
@@ -68,7 +97,7 @@ public class SensorActivity extends AppCompatActivity {
         }
 
         public class SensorHolder extends RecyclerView.ViewHolder {
-            private TextView textView;
+            private final TextView textView;
 
             public SensorHolder(LayoutInflater inflater, ViewGroup parent) {
                 super(inflater.inflate(R.layout.sensor_list_item, parent, false));
