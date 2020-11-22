@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.sensorapp.SensorDetailsActivity.EXTRA_SENSOR_TYPE_PARAMETER;
+
 public class SensorActivity extends AppCompatActivity {
     private SensorManager sensorManager;
     private List<Sensor> sensorList;
@@ -119,6 +121,7 @@ public class SensorActivity extends AppCompatActivity {
                     itemContainer.setBackgroundColor(getResources().getColor(R.color.favour_item_background));
                     itemContainer.setOnClickListener(v -> {
                         Intent intent = new Intent(SensorActivity.this, SensorDetailsActivity.class);
+                        intent.putExtra(EXTRA_SENSOR_TYPE_PARAMETER, sensor.getType());
                         startActivityForResult(intent, SENSOR_DETAILS_ACTIVITY_REQUEST_CODE);
                     });
                 }
