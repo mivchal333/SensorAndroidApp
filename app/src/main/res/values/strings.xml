@@ -3,4 +3,8 @@
     <string name="todo">TODO</string>
     <string name="menu_button">menu button</string>
     <string name="sensors_count">Liczba czujników: %d</string>
+    <string name="example_sensor_name">Example sensor name</string>
+    <string name="example_sensor_value">example sensor value</string>
+    <string name="missing_sensor">Brak czujnika</string>
+    <string name="light_sensor_label">Czujnik światła %s</string>
 </resources>

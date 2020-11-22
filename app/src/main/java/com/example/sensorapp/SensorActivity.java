@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SensorActivity extends AppCompatActivity {
@@ -26,8 +28,8 @@ public class SensorActivity extends AppCompatActivity {
     private List<Sensor> sensorList;
     private RecyclerView recyclerView;
     private SensorAdapter adapter;
-
     private static final String SENSOR_APP_TAG = "SENSOR_APP_TAG";
+    private final List<Integer> favourSensors = Arrays.asList(Sensor.TYPE_LIGHT, Sensor.TYPE_AMBIENT_TEMPERATURE);
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -97,16 +99,22 @@ public class SensorActivity extends AppCompatActivity {
         }
 
         public class SensorHolder extends RecyclerView.ViewHolder {
-            private final TextView textView;
+            private final TextView sensorNameTextView;
+            private final TextView sensorTypeTextView;
 
             public SensorHolder(LayoutInflater inflater, ViewGroup parent) {
                 super(inflater.inflate(R.layout.sensor_list_item, parent, false));
-
-                textView = itemView.findViewById(R.id.firstLine);
+                sensorNameTextView = itemView.findViewById(R.id.sensor_name);
+                sensorTypeTextView = itemView.findViewById(R.id.sensor_type);
             }
 
             public void bind(Sensor sensor) {
-                textView.setText(sensor.getName());
+                sensorNameTextView.setText(sensor.getName());
+                sensorTypeTextView.setText(String.valueOf(sensor.getType()));
+                View itemContainer = itemView.findViewById(R.id.list_item_sensor);
+                if (favourSensors.contains(sensor.getType())) {
+                    itemContainer.setBackgroundColor(getResources().getColor(R.color.favour_item_background));
+                }
             }
         }
     }
