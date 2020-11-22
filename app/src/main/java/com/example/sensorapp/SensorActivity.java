@@ -1,6 +1,7 @@
 package com.example.sensorapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Build;
@@ -30,6 +31,8 @@ public class SensorActivity extends AppCompatActivity {
     private SensorAdapter adapter;
     private static final String SENSOR_APP_TAG = "SENSOR_APP_TAG";
     private final List<Integer> favourSensors = Arrays.asList(Sensor.TYPE_LIGHT, Sensor.TYPE_AMBIENT_TEMPERATURE);
+    public static final int SENSOR_DETAILS_ACTIVITY_REQUEST_CODE = 1;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,6 +117,10 @@ public class SensorActivity extends AppCompatActivity {
                 View itemContainer = itemView.findViewById(R.id.list_item_sensor);
                 if (favourSensors.contains(sensor.getType())) {
                     itemContainer.setBackgroundColor(getResources().getColor(R.color.favour_item_background));
+                    itemContainer.setOnClickListener(v -> {
+                        Intent intent = new Intent(SensorActivity.this, SensorDetailsActivity.class);
+                        startActivityForResult(intent, SENSOR_DETAILS_ACTIVITY_REQUEST_CODE);
+                    });
                 }
             }
         }

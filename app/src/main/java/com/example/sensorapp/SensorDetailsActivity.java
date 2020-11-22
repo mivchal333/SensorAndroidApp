@@ -13,20 +13,24 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SensorDetailsActivity extends AppCompatActivity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor sensorLight;
-    private TextView sensorLightTextView;
+    private Sensor sensorTemperature;
+    private TextView sensorNameTextView;
+    private TextView sensorValueTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor_details);
 
-        sensorLightTextView = findViewById(R.id.sensor_light_label);
+        sensorNameTextView = findViewById(R.id.details_sensor_name);
+        sensorValueTextView = findViewById(R.id.details_sensor_value);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        sensorTemperature = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
 
         if (sensorLight == null) {
-            sensorLightTextView.setText(R.string.missing_sensor);
+            sensorNameTextView.setText(R.string.missing_sensor);
         }
 
     }
@@ -51,8 +55,9 @@ public class SensorDetailsActivity extends AppCompatActivity implements SensorEv
         float value = event.values[0];
         switch (type) {
             case Sensor.TYPE_LIGHT:
-                sensorLightTextView.setText(getResources().getString(R.string.light_sensor_label, value));
+                sensorNameTextView.setText(getResources().getString(R.string.light_sensor_label, value));
                 break;
+            case Sensor.TYPE_AMBIENT_TEMPERATURE:
         }
 
     }
